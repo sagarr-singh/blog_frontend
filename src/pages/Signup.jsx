@@ -1,18 +1,28 @@
 import { useState } from "react";
-import api from "../api"; // Make sure api.js is correctly configured
+import api from "../api";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await api.post("/auth/signup", { name, email, password });
       console.log(res.data.message);
+      alert("Signup successful!");
+      navigate("/")
     } catch (err) {
       console.error(err.response?.data?.error || "Signup failed");
+      // if (err.response?.data?.error === "Email already exists") {
+      //   alert("Email already exists. Please use a different one.");
+      // } else {
+      //   alert("Signup failed. Try again.");
+      // }
     }
   };
 
